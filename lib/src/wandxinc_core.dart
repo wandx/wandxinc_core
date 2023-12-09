@@ -24,4 +24,9 @@ class WandxincCore {
     return SharedPreferences.getInstance()
         .then((value) => value.getString('token') ?? '');
   }
+
+  Future<void> clearToken() async {
+    await SharedPreferences.getInstance()
+        .then((value) => value.remove('token'));
+  }
 }
