@@ -12,6 +12,7 @@ dependencies:
   dartz: ^0.10.1
   flutter:
     sdk: flutter
+  pretty_chopper_logger: ^1.0.9
   intl: ^0.18.1
   shared_preferences: ^2.2.2
 

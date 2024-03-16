@@ -1,4 +1,5 @@
 import 'package:chopper/chopper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// {@template wandxinc_core}
 /// A Very Good Project created by Very Good CLI.
@@ -13,4 +14,27 @@ class WandxincCore {
   List<ChopperService> services = [];
 
   List<ChopperService> authServices = [];
+
+  List<RequestInterceptor> authRequestInterceptors = [];
+
+  List<ResponseInterceptor> authResponseInterceptors = [];
+
+  List<RequestInterceptor> requestInterceptors = [];
+
+  List<ResponseInterceptor> responseInterceptors = [];
+
+  Future<void> setToken(String token) async {
+    await SharedPreferences.getInstance()
+        .then((value) => value.setString('token', token));
+  }
+
+  Future<String> getToken() async {
+    return SharedPreferences.getInstance()
+        .then((value) => value.getString('token') ?? '');
+  }
+
+  Future<void> clearToken() async {
+    await SharedPreferences.getInstance()
+        .then((value) => value.remove('token'));
+  }
 }
