@@ -41,7 +41,13 @@ class ErrorResponseInterceptor implements ResponseInterceptor {
 
         messages.add(message.first);
       } catch (error) {
-        messages.add(body['message'] as String);
+        if (body.containsKey('message')) {
+          messages.add(body['message'] as String);
+        }
+
+        if (body.containsKey('Message')) {
+          messages.add(body['Message'] as String);
+        }
       } finally {
         messages.add('Error Occured');
       }
