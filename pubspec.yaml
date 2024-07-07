@@ -8,7 +8,7 @@ environment:
   flutter: ">=3.10.0"
 
 dependencies:
-  chopper: ^7.0.9
+  chopper: ^8.0.1+1
   dartz: ^0.10.1
   flutter:
     sdk: flutter

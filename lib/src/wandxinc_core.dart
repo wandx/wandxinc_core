@@ -15,13 +15,9 @@ class WandxincCore {
 
   List<ChopperService> authServices = [];
 
-  List<RequestInterceptor> authRequestInterceptors = [];
+  List<Interceptor> authInterceptors = [];
 
-  List<ResponseInterceptor> authResponseInterceptors = [];
-
-  List<RequestInterceptor> requestInterceptors = [];
-
-  List<ResponseInterceptor> responseInterceptors = [];
+  List<Interceptor> interceptors = [];
 
   Future<void> setToken(String token) async {
     await SharedPreferences.getInstance()

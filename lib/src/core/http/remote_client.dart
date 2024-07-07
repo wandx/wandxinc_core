@@ -10,7 +10,7 @@ class RemoteClient {
   static ChopperClient get authClient => ChopperClient(
         baseUrl: Uri.parse(baseUrl),
         services: WandxincCore.instance.authServices,
-        interceptors: <dynamic>[
+        interceptors: <Interceptor>[
           ErrorResponseInterceptor(),
           HttpLoggingInterceptor(),
           AuthRequestInterceptor(),
@@ -19,8 +19,7 @@ class RemoteClient {
             'Accept': 'application/json',
           }),
           PrettyChopperLogger(),
-          ...WandxincCore.instance.authRequestInterceptors,
-          ...WandxincCore.instance.authResponseInterceptors,
+          ...WandxincCore.instance.authInterceptors,
         ],
         converter: const JsonConverter(),
       );
@@ -28,7 +27,7 @@ class RemoteClient {
   static ChopperClient get client => ChopperClient(
         baseUrl: Uri.parse(baseUrl),
         services: WandxincCore.instance.services,
-        interceptors: <dynamic>[
+        interceptors: <Interceptor>[
           ErrorResponseInterceptor(),
           HttpLoggingInterceptor(),
           PrettyChopperLogger(),
@@ -36,8 +35,7 @@ class RemoteClient {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           }),
-          ...WandxincCore.instance.requestInterceptors,
-          ...WandxincCore.instance.responseInterceptors,
+          ...WandxincCore.instance.interceptors,
         ],
         converter: const JsonConverter(),
       );

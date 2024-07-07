@@ -3,23 +3,12 @@ import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
 
-class ErrorResponseInterceptor implements ResponseInterceptor {
+class ErrorResponseInterceptor implements Interceptor {
   @override
-  FutureOr<Response<dynamic>> onResponse(Response<dynamic> response) {
-    // if (response.statusCode == 401) {
-    //   final context = getIt<GlobalKey<NavigatorState>>(
-    //           instanceName: AppEnvironment.navigatorKey)
-    //       .currentContext;
-    //   if (context != null) {
-    //     Navigator.popUntil(context, (route) => route.isFirst);
-    //     Navigator.pushReplacement(
-    //       context,
-    //       MaterialPageRoute<void>(
-    //         builder: (context) => const OnBoardingScreen(),
-    //       ),
-    //     );
-    //   }
-    print(response.bodyString);
+  FutureOr<Response<BodyType>> intercept<BodyType>(
+    Chain<BodyType> chain,
+  ) async {
+    final response = await chain.proceed(chain.request);
     if (response.statusCode < 200 || response.statusCode >= 300) {
       final messages = <String>[];
       late Map<String, dynamic> body;
@@ -27,7 +16,7 @@ class ErrorResponseInterceptor implements ResponseInterceptor {
       if (response.body == null) {
         body = jsonDecode(response.bodyString) as Map<String, dynamic>;
       } else {
-        body = response.body as Map<String, dynamic>;
+        body = response.body! as Map<String, dynamic>;
       }
 
       try {

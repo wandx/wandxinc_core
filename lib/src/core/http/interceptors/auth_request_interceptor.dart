@@ -3,14 +3,7 @@ import 'dart:async';
 import 'package:chopper/chopper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthRequestInterceptor implements RequestInterceptor {
-  @override
-  FutureOr<Request> onRequest(Request request) async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
-    return applyHeaders(request, {'Authorization': 'Bearer $token'});
-  }
-
+class AuthRequestInterceptor implements Interceptor {
   Request applyHeaders(
     Request request,
     Map<String, String> headers, {
@@ -24,5 +17,15 @@ class AuthRequestInterceptor implements RequestInterceptor {
     }
 
     return request.copyWith(headers: h);
+  }
+
+  @override
+  FutureOr<Response<BodyType>> intercept<BodyType>(
+    Chain<BodyType> chain,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    final req = applyHeaders(chain.request, {'Authorization': 'Bearer $token'});
+    return chain.proceed(req);
   }
 }
