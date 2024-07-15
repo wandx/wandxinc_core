@@ -24,6 +24,20 @@ extension ValidatorExtOnString on String {
     };
   }
 
+  /// Validate if string is number
+  String? Function(String?) validateNumber() {
+    return (String? value) {
+      if (value == null || value.isEmpty) {
+        return null;
+      }
+      final numberRegex = RegExp(r'^[0-9]+$');
+      if (!numberRegex.hasMatch(value)) {
+        return this;
+      }
+      return null;
+    };
+  }
+
   /// Validate if string has minimum length
   String? Function(String?) validateMinLength(int minLength) {
     return (String? value) {
@@ -44,6 +58,75 @@ extension ValidatorExtOnString on String {
         return null;
       }
       if (value.length > maxLength) {
+        return this;
+      }
+      return null;
+    };
+  }
+
+  /// Validate string should match other string
+  String? Function(String?) validateMatch(String other) {
+    return (String? value) {
+      if (value == null || value.isEmpty) {
+        return null;
+      }
+      if (value != other) {
+        return this;
+      }
+      return null;
+    };
+  }
+
+  /// Validate need at least 1 uppercase letter
+  String? Function(String?) validateAtLeastOneUpperCase() {
+    return (String? value) {
+      if (value == null || value.isEmpty) {
+        return null;
+      }
+      final upperCaseRegex = RegExp('[A-Z]');
+      if (!upperCaseRegex.hasMatch(value)) {
+        return this;
+      }
+      return null;
+    };
+  }
+
+  /// Validate need at least 1 lowercase letter
+  String? Function(String?) validateAtLeastOneLowerCase() {
+    return (String? value) {
+      if (value == null || value.isEmpty) {
+        return null;
+      }
+      final lowerCaseRegex = RegExp('[a-z]');
+      if (!lowerCaseRegex.hasMatch(value)) {
+        return this;
+      }
+      return null;
+    };
+  }
+
+  /// Validate need at least 1 number
+  String? Function(String?) validateAtLeastOneNumber() {
+    return (String? value) {
+      if (value == null || value.isEmpty) {
+        return null;
+      }
+      final numberRegex = RegExp('[0-9]');
+      if (!numberRegex.hasMatch(value)) {
+        return this;
+      }
+      return null;
+    };
+  }
+
+  /// Validate need at least 1 special character
+  String? Function(String?) validateAtLeastOneSpecialCharacter() {
+    return (String? value) {
+      if (value == null || value.isEmpty) {
+        return null;
+      }
+      final specialCharacterRegex = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+      if (!specialCharacterRegex.hasMatch(value)) {
         return this;
       }
       return null;
