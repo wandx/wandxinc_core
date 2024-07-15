@@ -11,6 +11,9 @@ class WandxincCore {
   /// The base URL of the API
   String baseUrl = '';
 
+  /// Enable HTTP logging
+  bool enableHttpLogging = true;
+
   /// The list of services
   List<ChopperService> services = [];
 

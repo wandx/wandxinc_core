@@ -16,13 +16,13 @@ class RemoteClient {
         services: WandxincCore.instance.authServices,
         interceptors: <Interceptor>[
           ErrorResponseInterceptor(),
-          HttpLoggingInterceptor(),
+          if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
+          if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
           AuthRequestInterceptor(),
           const HeadersInterceptor({
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           }),
-          PrettyChopperLogger(),
           ...WandxincCore.instance.authInterceptors,
         ],
         converter: const JsonConverter(),
@@ -34,8 +34,8 @@ class RemoteClient {
         services: WandxincCore.instance.services,
         interceptors: <Interceptor>[
           ErrorResponseInterceptor(),
-          HttpLoggingInterceptor(),
-          PrettyChopperLogger(),
+          if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
+          if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
           const HeadersInterceptor({
             'Content-Type': 'application/json',
             'Accept': 'application/json',
