@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 
+/// Extension on num to format currency
 extension NumExt on num {
+  /// Format the number to currency
   String currency({
     String? prefix,
     String? locale,

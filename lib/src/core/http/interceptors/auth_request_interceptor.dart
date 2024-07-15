@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:chopper/chopper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// AuthRequestInterceptor is an interceptor that adds the Authorization header
+/// to the request
 class AuthRequestInterceptor implements Interceptor {
+  /// applyHeaders is a method that adds headers to the request
   Request applyHeaders(
     Request request,
     Map<String, String> headers, {

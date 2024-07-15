@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
 
+/// ErrorResponseInterceptor is an interceptor that handles error responses
 class ErrorResponseInterceptor implements Interceptor {
   @override
   FutureOr<Response<BodyType>> intercept<BodyType>(

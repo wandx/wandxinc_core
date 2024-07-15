@@ -4,9 +4,13 @@ import 'package:wandxinc_core/src/core/http/interceptors/auth_request_intercepto
 import 'package:wandxinc_core/src/core/http/interceptors/error_response_interceptor.dart';
 import 'package:wandxinc_core/wandxinc_core.dart';
 
+/// RemoteClient is a class that provides the chopper client for making
+/// http requests
 class RemoteClient {
+  /// baseUrl is the base url for the api
   static String baseUrl = WandxincCore.instance.baseUrl;
 
+  /// authClient is the chopper client for making authenticated requests
   static ChopperClient get authClient => ChopperClient(
         baseUrl: Uri.parse(baseUrl),
         services: WandxincCore.instance.authServices,
@@ -24,6 +28,7 @@ class RemoteClient {
         converter: const JsonConverter(),
       );
 
+  /// client is the chopper client for making requests
   static ChopperClient get client => ChopperClient(
         baseUrl: Uri.parse(baseUrl),
         services: WandxincCore.instance.services,
