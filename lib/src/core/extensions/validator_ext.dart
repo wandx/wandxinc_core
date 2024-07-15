@@ -54,7 +54,7 @@ extension ValidatorExtOnString on String {
 /// Validator extension on List of Functions
 extension ValidatorExtOnList on List<String? Function(String?)> {
   /// Validate a list of validators
-  String? Function(String?)? validate() {
+  String? Function(String?)? compose() {
     if (isEmpty) {
       return null;
     }
