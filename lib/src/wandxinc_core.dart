@@ -9,7 +9,7 @@ class WandxincCore {
   static WandxincCore instance = WandxincCore._();
 
   /// The base URL of the API
-  String baseUrl = '';
+  late String baseUrl;
 
   /// Enable HTTP logging
   bool enableHttpLogging = true;
