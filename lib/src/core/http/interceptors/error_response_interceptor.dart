@@ -38,6 +38,10 @@ class ErrorResponseInterceptor implements Interceptor {
         if (body.containsKey('Message')) {
           messages.add(body['Message'] as String);
         }
+
+        if (body.containsKey('response_message')) {
+          messages.add(body['response_message'] as String);
+        }
       } finally {
         messages.add('Error Occured');
       }
