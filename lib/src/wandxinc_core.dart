@@ -26,6 +26,9 @@ class WandxincCore {
   /// The list of interceptors
   List<Interceptor> interceptors = [];
 
+  /// List of error message keys
+  List<String> errorMessageKeys = [];
+
   /// Set token for authentication
   Future<void> setToken(String token) async {
     await SharedPreferences.getInstance()

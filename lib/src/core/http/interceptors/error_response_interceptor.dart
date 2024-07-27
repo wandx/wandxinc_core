@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:chopper/chopper.dart';
+import 'package:wandxinc_core/src/wandxinc_core.dart';
 
 /// ErrorResponseInterceptor is an interceptor that handles error responses
 class ErrorResponseInterceptor implements Interceptor {
@@ -41,6 +42,12 @@ class ErrorResponseInterceptor implements Interceptor {
 
         if (body.containsKey('response_message')) {
           messages.add(body['response_message'] as String);
+        }
+
+        for (final key in WandxincCore.instance.errorMessageKeys) {
+          if (body.containsKey(key)) {
+            messages.add(body[key] as String);
+          }
         }
       } finally {
         messages.add('Error Occured');
