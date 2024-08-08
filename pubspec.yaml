@@ -1,6 +1,6 @@
 name: wandxinc_core
 description: A Very Good Project created by Very Good CLI.
-version: 2.5.1+1
+version: 3.0.0+1
 publish_to: none
 
 environment:
