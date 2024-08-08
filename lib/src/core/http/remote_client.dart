@@ -11,6 +11,7 @@ class RemoteClient {
   static String baseUrl = WandxincCore.instance.baseUrl;
 
   /// authClient is the chopper client for making authenticated requests
+  @Deprecated('Use authHttpClient instead')
   static ChopperClient get authClient => ChopperClient(
         baseUrl: Uri.parse(baseUrl),
         services: WandxincCore.instance.authServices,
@@ -29,6 +30,7 @@ class RemoteClient {
       );
 
   /// client is the chopper client for making requests
+  @Deprecated('Use httpClient instead')
   static ChopperClient get client => ChopperClient(
         baseUrl: Uri.parse(baseUrl),
         services: WandxincCore.instance.services,
@@ -44,4 +46,59 @@ class RemoteClient {
         ],
         converter: const JsonConverter(),
       );
+
+  /// authHttpClient is the chopper client for making authenticated requests
+  static ChopperClient authHttpClient([String? newBaseUrl]) {
+    late String url;
+
+    if (newBaseUrl != null) {
+      url = newBaseUrl;
+    } else {
+      url = baseUrl;
+    }
+
+    return ChopperClient(
+      baseUrl: Uri.parse(url),
+      services: WandxincCore.instance.services,
+      interceptors: <Interceptor>[
+        ErrorResponseInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
+        AuthRequestInterceptor(),
+        const HeadersInterceptor({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }),
+        ...WandxincCore.instance.interceptors,
+      ],
+      converter: const JsonConverter(),
+    );
+  }
+
+  /// httpClient is the chopper client for making requests
+  static ChopperClient httpClient([String? newBaseUrl]) {
+    late String url;
+
+    if (newBaseUrl != null) {
+      url = newBaseUrl;
+    } else {
+      url = baseUrl;
+    }
+
+    return ChopperClient(
+      baseUrl: Uri.parse(url),
+      services: WandxincCore.instance.services,
+      interceptors: <Interceptor>[
+        ErrorResponseInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
+        const HeadersInterceptor({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }),
+        ...WandxincCore.instance.interceptors,
+      ],
+      converter: const JsonConverter(),
+    );
+  }
 }
