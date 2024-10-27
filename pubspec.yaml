@@ -1,6 +1,6 @@
 name: wandxinc_core
 description: A Very Good Project created by Very Good CLI.
-version: 3.0.0+1
+version: 3.1.0+1
 publish_to: none
 
 environment:
@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.19.0
-  pretty_chopper_logger: ^1.2.0
+  pretty_chopper_logger: ^1.2.1
   shared_preferences: ^2.2.3
 
 dev_dependencies:
