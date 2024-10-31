@@ -59,7 +59,7 @@ class RemoteClient {
 
     return ChopperClient(
       baseUrl: Uri.parse(url),
-      services: WandxincCore.instance.services,
+      services: WandxincCore.instance.authServices,
       interceptors: <Interceptor>[
         ErrorResponseInterceptor(),
         if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
