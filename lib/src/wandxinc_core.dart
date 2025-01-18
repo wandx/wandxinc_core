@@ -35,6 +35,42 @@ class WandxincCore {
         .then((value) => value.setString('token', token));
   }
 
+  /// Set client token for authentication
+  Future<void> setClientToken(String token) async {
+    await SharedPreferences.getInstance()
+        .then((value) => value.setString('client_token', token));
+  }
+
+  /// Get client token for authentication
+  Future<String> getClientToken() async {
+    return SharedPreferences.getInstance()
+        .then((value) => value.getString('client_token') ?? '');
+  }
+
+  /// Clear client token for authentication
+  Future<void> clearClientToken() async {
+    await SharedPreferences.getInstance()
+        .then((value) => value.remove('client_token'));
+  }
+
+  /// Set refresh token for authentication
+  Future<void> setRefreshToken(String token) async {
+    await SharedPreferences.getInstance()
+        .then((value) => value.setString('refresh_token', token));
+  }
+
+  /// Get refresh token for authentication
+  Future<String> getRefreshToken() async {
+    return SharedPreferences.getInstance()
+        .then((value) => value.getString('refresh_token') ?? '');
+  }
+
+  /// Clear refresh token for authentication
+  Future<void> clearRefreshToken() async {
+    await SharedPreferences.getInstance()
+        .then((value) => value.remove('refresh_token'));
+  }
+
   /// Get token for authentication
   Future<String> getToken() async {
     return SharedPreferences.getInstance()
