@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:chopper/chopper.dart';
-import 'package:wandxinc_core/src/wandxinc_core.dart';
+import 'package:wandxinc_core/wandxinc_core.dart';
 
-/// AuthRequestInterceptor is an interceptor that adds the Authorization header
+/// OauthClientCredentialInterceptor is an interceptor that adds the Authorization header
 /// to the request
-class AuthRequestInterceptor implements Interceptor {
+class OauthClientCredentialInterceptor implements Interceptor {
   /// applyHeaders is a method that adds headers to the request
   Request applyHeaders(
     Request request,
@@ -26,7 +26,7 @@ class AuthRequestInterceptor implements Interceptor {
   FutureOr<Response<BodyType>> intercept<BodyType>(
     Chain<BodyType> chain,
   ) async {
-    final token = await WandxincCore.instance.getToken();
+    final token = await WandxincCore.instance.getClientToken();
     final req = applyHeaders(chain.request, {'Authorization': 'Bearer $token'});
     return chain.proceed(req);
   }

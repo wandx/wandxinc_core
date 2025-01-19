@@ -1,7 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:pretty_chopper_logger/pretty_chopper_logger.dart';
-import 'package:wandxinc_core/src/core/http/interceptors/auth_request_interceptor.dart';
-import 'package:wandxinc_core/src/core/http/interceptors/error_response_interceptor.dart';
+import 'package:wandxinc_core/src/core/http/interceptors/oauth_client_credential_interceptor.dart';
 import 'package:wandxinc_core/wandxinc_core.dart';
 
 /// RemoteClient is a class that provides the chopper client for making
@@ -65,6 +64,34 @@ class RemoteClient {
         if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
         if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
         AuthRequestInterceptor(),
+        const HeadersInterceptor({
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }),
+        ...WandxincCore.instance.authInterceptors,
+      ],
+      converter: const JsonConverter(),
+    );
+  }
+
+  /// authHttpClient is the chopper client for making authenticated requests
+  static ChopperClient oauthClientCredentialHttpClient([String? newBaseUrl]) {
+    late String url;
+
+    if (newBaseUrl != null) {
+      url = newBaseUrl;
+    } else {
+      url = baseUrl;
+    }
+
+    return ChopperClient(
+      baseUrl: Uri.parse(url),
+      services: WandxincCore.instance.authServices,
+      interceptors: <Interceptor>[
+        ErrorResponseInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
+        OauthClientCredentialInterceptor(),
         const HeadersInterceptor({
           'Content-Type': 'application/json',
           'Accept': 'application/json',
