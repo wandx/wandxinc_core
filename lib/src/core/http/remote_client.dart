@@ -96,7 +96,7 @@ class RemoteClient {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         }),
-        ...WandxincCore.instance.authInterceptors,
+        ...WandxincCore.instance.oauthClientInterceptors,
       ],
       converter: const JsonConverter(),
     );

@@ -23,6 +23,9 @@ class WandxincCore {
   /// The list of interceptors that require authentication
   List<Interceptor> authInterceptors = [];
 
+  /// The list of interceptors that require OAuth authentication
+  List<Interceptor> oauthClientInterceptors = [];
+
   /// The list of interceptors
   List<Interceptor> interceptors = [];
 
