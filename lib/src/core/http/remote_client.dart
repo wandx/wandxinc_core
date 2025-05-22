@@ -9,43 +9,6 @@ class RemoteClient {
   /// baseUrl is the base url for the api
   static String baseUrl = WandxincCore.instance.baseUrl;
 
-  /// authClient is the chopper client for making authenticated requests
-  @Deprecated('Use authHttpClient instead')
-  static ChopperClient get authClient => ChopperClient(
-        baseUrl: Uri.parse(baseUrl),
-        services: WandxincCore.instance.authServices,
-        interceptors: <Interceptor>[
-          ErrorResponseInterceptor(),
-          if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
-          if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
-          AuthRequestInterceptor(),
-          const HeadersInterceptor({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          }),
-          ...WandxincCore.instance.authInterceptors,
-        ],
-        converter: const JsonConverter(),
-      );
-
-  /// client is the chopper client for making requests
-  @Deprecated('Use httpClient instead')
-  static ChopperClient get client => ChopperClient(
-        baseUrl: Uri.parse(baseUrl),
-        services: WandxincCore.instance.services,
-        interceptors: <Interceptor>[
-          ErrorResponseInterceptor(),
-          if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
-          if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
-          const HeadersInterceptor({
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          }),
-          ...WandxincCore.instance.interceptors,
-        ],
-        converter: const JsonConverter(),
-      );
-
   /// authHttpClient is the chopper client for making authenticated requests
   static ChopperClient authHttpClient([String? newBaseUrl]) {
     late String url;
