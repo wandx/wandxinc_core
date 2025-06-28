@@ -16,11 +16,16 @@ class ErrorResponseInterceptor implements Interceptor {
       if (response.statusCode < 200 || response.statusCode >= 300) {
         final messages = <String>[];
         late Map<String, dynamic> body;
+        var code = 0;
 
         if (response.body == null) {
           body = jsonDecode(response.bodyString) as Map<String, dynamic>;
         } else {
           body = response.body! as Map<String, dynamic>;
+        }
+
+        if (body.containsKey('code')) {
+          code = body['code'] as int;
         }
 
         try {
@@ -33,7 +38,7 @@ class ErrorResponseInterceptor implements Interceptor {
           });
 
           messages.add(message.first);
-        } catch (error) {
+        } on Exception catch (_) {
           if (body.containsKey('message')) {
             messages.add(body['message'] as String);
           }
@@ -56,28 +61,64 @@ class ErrorResponseInterceptor implements Interceptor {
         }
 
         messages.add('No Data');
-        throw _ResponseException(messages.first);
+        throw ResponseException(
+          message: messages.first,
+          httpCode: response.statusCode,
+          code: code,
+        );
       }
       return response;
     } on SocketException catch (_) {
-      throw _ResponseException('Tidak ada koneksi internet');
+      throw ResponseException(
+        message: 'Tidak ada koneksi internet',
+        code: 1110,
+        httpCode: 500,
+      );
     } on HandshakeException catch (_) {
-      throw _ResponseException('Tidak ada koneksi internet');
+      throw ResponseException(
+        message: 'Tidak ada koneksi internet',
+        code: 1110,
+        httpCode: 500,
+      );
     } on TimeoutException catch (_) {
-      throw _ResponseException('Koneksi timeout');
+      throw ResponseException(
+        message: 'Timeout',
+        code: 1111,
+        httpCode: 500,
+      );
+
     } catch (e) {
-      throw _ResponseException(e.toString());
+      throw ResponseException(
+        message: e.toString(),
+        code: 1199,
+        httpCode: 500,
+      );
     }
   }
 }
 
-class _ResponseException implements Exception {
-  _ResponseException(this.message);
+/// ResponseException is an exception that is thrown when a response is not successful
+class ResponseException implements Exception {
+  /// Constructor for the ResponseException class
+  ResponseException({
+    required this.message,
+    this.code = 0,
+    this.httpCode = 200,
+  });
 
+  /// The message of the exception
   final String message;
+
+  /// The code of the exception
+  final int code;
+
+  /// The http code of the exception
+  final int httpCode;
 
   @override
   String toString() {
-    return message;
+    return 'ResponseException: message: $message, '
+        'code: $code, '
+        'httpCode: $httpCode';
   }
 }

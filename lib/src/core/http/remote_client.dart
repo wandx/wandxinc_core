@@ -23,15 +23,16 @@ class RemoteClient {
       baseUrl: Uri.parse(url),
       services: WandxincCore.instance.authServices,
       interceptors: <Interceptor>[
-        ErrorResponseInterceptor(),
-        if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
-        if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
-        AuthRequestInterceptor(),
         const HeadersInterceptor({
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         }),
-        ...WandxincCore.instance.authInterceptors,
+        ..._preAuthInterceptors(),
+        ErrorResponseInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
+        AuthRequestInterceptor(),
+        ..._postAuthInterceptors(),
       ],
       converter: const JsonConverter(),
     );
@@ -51,15 +52,16 @@ class RemoteClient {
       baseUrl: Uri.parse(url),
       services: WandxincCore.instance.authServices,
       interceptors: <Interceptor>[
-        ErrorResponseInterceptor(),
-        if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
-        if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
-        OauthClientCredentialInterceptor(),
         const HeadersInterceptor({
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         }),
-        ...WandxincCore.instance.oauthClientInterceptors,
+        ..._preOauthClientInterceptors(),
+        ErrorResponseInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
+        OauthClientCredentialInterceptor(),
+        ..._postOauthClientInterceptors(),
       ],
       converter: const JsonConverter(),
     );
@@ -79,16 +81,59 @@ class RemoteClient {
       baseUrl: Uri.parse(url),
       services: WandxincCore.instance.services,
       interceptors: <Interceptor>[
-        ErrorResponseInterceptor(),
-        if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
-        if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
         const HeadersInterceptor({
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         }),
-        ...WandxincCore.instance.interceptors,
+        ..._preInterceptors(),
+        ErrorResponseInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) HttpLoggingInterceptor(),
+        if (WandxincCore.instance.enableHttpLogging) PrettyChopperLogger(),
+        ..._postInterceptors(),
       ],
       converter: const JsonConverter(),
     );
   }
+}
+
+List<Interceptor> _preInterceptors() {
+  return WandxincCore.instance.interceptors
+      .where((e) => e.$1)
+      .map((e) => e.$2)
+      .toList();
+}
+
+List<Interceptor> _postInterceptors() {
+  return WandxincCore.instance.interceptors
+      .where((e) => !e.$1)
+      .map((e) => e.$2)
+      .toList();
+}
+
+List<Interceptor> _preAuthInterceptors() {
+  return WandxincCore.instance.authInterceptors
+      .where((e) => e.$1)
+      .map((e) => e.$2)
+      .toList();
+}
+
+List<Interceptor> _postAuthInterceptors() {
+  return WandxincCore.instance.authInterceptors
+      .where((e) => !e.$1)
+      .map((e) => e.$2)
+      .toList();
+}
+
+List<Interceptor> _preOauthClientInterceptors() {
+  return WandxincCore.instance.oauthClientInterceptors
+      .where((e) => e.$1)
+      .map((e) => e.$2)
+      .toList();
+}
+
+List<Interceptor> _postOauthClientInterceptors() {
+  return WandxincCore.instance.oauthClientInterceptors
+      .where((e) => !e.$1)
+      .map((e) => e.$2)
+      .toList();
 }

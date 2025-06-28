@@ -21,13 +21,19 @@ class WandxincCore {
   List<ChopperService> authServices = [];
 
   /// The list of interceptors that require authentication
-  List<Interceptor> authInterceptors = [];
+  /// first is the interceptor executed before process the error catch
+  /// second is the interceptor
+  List<(bool, Interceptor)> authInterceptors = [];
 
   /// The list of interceptors that require OAuth authentication
-  List<Interceptor> oauthClientInterceptors = [];
+  /// first is the interceptor executed before process the error catch
+  /// second is the interceptor
+  List<(bool, Interceptor)> oauthClientInterceptors = [];
 
   /// The list of interceptors
-  List<Interceptor> interceptors = [];
+  /// first is the interceptor executed before process the error catch
+  /// second is the interceptor
+  List<(bool, Interceptor)> interceptors = [];
 
   /// List of error message keys
   List<String> errorMessageKeys = [];

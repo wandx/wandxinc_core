@@ -6,13 +6,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wandxinc_core/src/core/core.dart';
 import 'package:wandxinc_core/src/wandxinc_core.dart';
 
+/// Oauth provider
 class Oat {
+  /// Get token from server
   static const tokenUrl = String.fromEnvironment('OAUTH_BASE_URL');
+
+  /// Get token from server
   static const clientId = String.fromEnvironment('OAUTH_CLIENT_ID');
+
+  /// Get token from server
   static const clientSecret = String.fromEnvironment('OAUTH_CLIENT_SECRET');
 
+  /// Get token from server
   Uri get tokenUri => Uri.parse('$tokenUrl/oauth/token');
 
+  /// Get access token from client credentials
   Future<Either<OatException, (int, String)>> getClientAccessToken() async {
     _validateSatisfy();
 
@@ -36,11 +44,12 @@ class Oat {
       await WandxincCore.instance.setClientToken(token);
 
       return right((expiresIn, token));
-    } catch (e) {
+    } on Exception catch (e) {
       return left(OatException(message: e.toString()));
     }
   }
 
+  /// Get access token from username and password
   Future<Either<OatException, (int, String, String)>> getAccessToken({
     required String username,
     required String password,
@@ -74,12 +83,13 @@ class Oat {
       await WandxincCore.instance.setRefreshToken(refreshToken);
 
       return right((expiresIn, token, refreshToken));
-    } catch (e) {
+    } on Exception catch (e) {
       return left(OatException(message: e.toString()));
     }
   }
 
-  Future<Either<OatException, (int, String, String)>> refershToken() async {
+  /// Refresh token
+  Future<Either<OatException, (int, String, String)>> refreshToken() async {
     _validateSatisfy();
 
     final clientToken = await WandxincCore.instance.getClientToken();
@@ -115,7 +125,7 @@ class Oat {
       await WandxincCore.instance.setRefreshToken(refreshToken);
 
       return right((expiresIn, token, refreshToken));
-    } catch (e) {
+    } on Exception catch (e) {
       return left(OatException(message: e.toString()));
     }
   }
@@ -135,6 +145,8 @@ class Oat {
   }
 }
 
+/// Exception for Oat
 class OatException extends BaseException {
+  /// Exception for Oat
   OatException({required super.message});
 }

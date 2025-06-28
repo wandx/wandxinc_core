@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:chopper/chopper.dart';
 import 'package:wandxinc_core/wandxinc_core.dart';
 
-/// OauthClientCredentialInterceptor is an interceptor that adds the Authorization header
-/// to the request
+/// OauthClientCredentialInterceptor is an interceptor that adds the
+/// Authorization header to the request
 class OauthClientCredentialInterceptor implements Interceptor {
   /// applyHeaders is a method that adds headers to the request
   Request applyHeaders(
