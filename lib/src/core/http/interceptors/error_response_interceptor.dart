@@ -119,8 +119,6 @@ class ResponseException implements Exception {
 
   @override
   String toString() {
-    return 'ResponseException: message: $message, '
-        'code: $code, '
-        'httpCode: $httpCode';
+    return message;
   }
 }
