@@ -30,14 +30,17 @@ class ErrorResponseInterceptor implements Interceptor {
 
         try {
           final message = <String>[];
-          (body['errors'] as Map<String, dynamic>).forEach((k, dynamic v) {
-            for (final msg in v as List) {
-              message.add('$msg');
-              // message.add('$k : $msg');
-            }
-          });
-
-          messages.add(message.first);
+          if (body.containsKey('errors')) {
+            (body['errors'] as Map<String, dynamic>).forEach((k, dynamic v) {
+              for (final msg in v as List) {
+                message.add('$msg');
+                // message.add('$k : $msg');
+              }
+            });
+            messages.add(message.first);
+          } else {
+            throw Exception('No error message found');
+          }
         } on Exception catch (_) {
           if (body.containsKey('message')) {
             messages.add(body['message'] as String);
@@ -86,7 +89,6 @@ class ErrorResponseInterceptor implements Interceptor {
         code: 1111,
         httpCode: 500,
       );
-
     } catch (e) {
       throw ResponseException(
         message: e.toString(),
