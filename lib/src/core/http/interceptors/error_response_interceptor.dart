@@ -31,6 +31,10 @@ class ErrorResponseInterceptor implements Interceptor {
         try {
           final message = <String>[];
           if (body.containsKey('errors')) {
+            final errors = body['errors'] as List<dynamic>;
+            if (errors.isEmpty) {
+              throw Exception('No error message found');
+            }
             (body['errors'] as Map<String, dynamic>).forEach((k, dynamic v) {
               for (final msg in v as List) {
                 message.add('$msg');
