@@ -24,4 +24,6 @@ class BaseFilter extends Equatable {
         value,
         operator,
       ];
+
+  Map<String, dynamic> get toMap => {key: value};
 }
